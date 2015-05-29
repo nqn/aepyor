@@ -4,7 +4,7 @@ project("Aepyornithidae")
 # gtest
 ADD_SUBDIRECTORY (dependencies/gtest-1.7.0)
 enable_testing()
-include_directories(${gtest_SOURCE_DIR}/include ${gtest_SOURCE_DIR})
+include_directories(${gtest_SOURCE_DIR}/include ${gtest_SOURCE_DIR} include)
 
 # tests
 add_executable(aepyor-tests src/tests/test.cc)
