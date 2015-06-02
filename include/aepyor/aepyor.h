@@ -25,6 +25,7 @@
 
 /**
  * Describes a full Aepyor session.
+ * TODO(nnielsen): Describe architecture, data transformation and feedback loop.
  */
 class Experiment {
  public:
@@ -32,6 +33,7 @@ class Experiment {
 
 /**
  * Describes the load to be carried out based on load pattern.
+ * TODO(nnielsen): Specialize Load to # of requests over time.
  */
 class Load {
  public:
@@ -75,6 +77,10 @@ class Timeline {
  */
 class Worker {
  public:
+
+  /**
+   * TODO(nnielsen): Support back pressure.
+   */
   virtual void work(std::shared_ptr<Load> load) = 0;
 };
 
