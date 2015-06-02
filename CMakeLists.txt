@@ -1,6 +1,8 @@
 cmake_minimum_required (VERSION 2.6)
 project("Aepyornithidae")
 
+SET(CMAKE_CXX_FLAGS "-std=c++11")
+
 # gtest
 ADD_SUBDIRECTORY (dependencies/gtest-1.7.0)
 enable_testing()
