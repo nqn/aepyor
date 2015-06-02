@@ -1,8 +1,8 @@
-language:
-  - cpp
+language: cpp
 
-install:
-  - make get-deps
+compiler:
+  - gcc
+  - clang
 
 script:
   - mkdir _builds
