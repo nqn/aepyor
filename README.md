@@ -1,5 +1,7 @@
 # Aepyor
 
+[![Build Status](https://travis-ci.org/nqn/aepyor.svg)](https://travis-ci.org/nqn/aepyor)
+
 Aepyor is a flexible load generating Mesos framework to mimic real-life user and system behavior.
 
 **NOTE:** This is still mostly an experimental workbench for generating the load patterns.
