@@ -1,0 +1,12 @@
+language:
+  - cpp
+
+install:
+  - make get-deps
+
+script:
+  - mkdir _builds
+  - cd _builds
+  - cmake ..
+  - make
+  - ctest
