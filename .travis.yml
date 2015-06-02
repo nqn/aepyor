@@ -5,6 +5,7 @@ compiler:
   - clang
 
 script:
+  - ./scripts/lint.sh
   - mkdir _builds
   - cd _builds
   - cmake ..
