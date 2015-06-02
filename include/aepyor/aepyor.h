@@ -58,7 +58,7 @@ class LoadPattern {
  */
 class Timeline {
  public:
-  explicit Timeline() {}
+  Timeline() {}
 
   /**
    * Start time and event cycle, driving load generation.
@@ -76,7 +76,6 @@ class Timeline {
  */
 class Worker {
  public:
-
   /**
    * TODO(nnielsen): Support back pressure.
    */

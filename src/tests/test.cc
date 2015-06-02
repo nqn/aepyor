@@ -61,7 +61,8 @@ class SinusLoadPattern : public LoadPattern {
       lastStep(0) {}
 
   shared_ptr<Load> at(int step) {
-    int result = int(floor(amplitude * sin(frequency * step) + offset));
+    int result =
+      static_cast<int>(floor(amplitude * sin(frequency * step) + offset));
 
     return make_shared<PrintIntLoad>(result);
   }
