@@ -80,7 +80,7 @@ class SinusLoadPattern : public LoadPattern {
 class TestTimeline : public Timeline {
  public:
   explicit TestTimeline(shared_ptr<LoadPattern> pattern)
-    : Timeline(std::chrono::seconds(1)), pattern(pattern) {}
+    : pattern(pattern) {}
 
   void start() {
     const int limit = 100;

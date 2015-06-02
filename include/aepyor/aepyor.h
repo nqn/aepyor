@@ -20,7 +20,6 @@
 #ifndef INCLUDE_AEPYOR_AEPYOR_H_
 #define INCLUDE_AEPYOR_AEPYOR_H_
 
-#include <chrono>  // NOLINT(build/c++11)
 #include <memory>
 
 /**
@@ -59,7 +58,7 @@ class LoadPattern {
  */
 class Timeline {
  public:
-  explicit Timeline(std::chrono::duration<double> resolution) {}
+  explicit Timeline() {}
 
   /**
    * Start time and event cycle, driving load generation.
