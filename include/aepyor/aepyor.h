@@ -22,6 +22,9 @@
 
 #include <memory>
 
+using Requests = int;
+using Seconds = double;
+
 /**
  * Describes a full Aepyor session.
  * TODO(nnielsen): Describe architecture, data transformation and feedback loop.
@@ -32,14 +35,24 @@ class Experiment {
 
 /**
  * Describes the load to be carried out based on load pattern.
- * TODO(nnielsen): Specialize Load to # of requests over time.
  */
 class Load {
  public:
-  /**
-   * Carry out work load.
-   */
-  virtual void perform() = 0;
+  Load(Requests requests, Seconds seconds)
+    : requests_(requests),
+      seconds_(seconds) {}
+
+  Requests requests() {
+    return requests_;
+  }
+
+  Seconds seconds() {
+    return seconds_;
+  }
+
+ private:
+  const Requests requests_;
+  const Seconds seconds_;
 };
 
 /**

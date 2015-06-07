@@ -20,6 +20,7 @@
 #include <math.h>
 
 #include <iostream>
+#include <queue>
 
 #include "aepyor/aepyor.h"
 
@@ -27,26 +28,26 @@
 
 using std::cout;
 using std::make_shared;
+using std::queue;
 using std::shared_ptr;
 
 /**
- * Test load for SinusLoadPattern.
+ * TODO(nnielsen): Inline worker to test values.
  */
-class PrintIntLoad : public Load {
+class TestWorker : public Worker {
  public:
-  explicit PrintIntLoad(int value) : value(value) {
-  }
-
-  virtual void perform() {
-    // TODO(nnielsen): Figure out how to generalize the load output for testing.
-    for (int cursor = 0; cursor < value; cursor++) {
-      cout << "#";
+  void work(std::shared_ptr<Load> load) {
+    for (int secondsCursor = 0;
+         secondsCursor < load->seconds();
+         secondsCursor++) {
+      for (int requestsCursor = 0;
+           requestsCursor < load->requests();
+           requestsCursor++) {
+        cout << "#";
+      }
+      cout << std::endl;
     }
-    cout << std::endl;
   }
-
- private:
-  int value;
 };
 
 /**
@@ -57,21 +58,19 @@ class SinusLoadPattern : public LoadPattern {
   SinusLoadPattern()
     : amplitude(10.0),
       frequency(0.2),
-      offset(amplitude),
-      lastStep(0) {}
+      offset(amplitude) {}
 
   shared_ptr<Load> at(int step) {
     int result =
       static_cast<int>(floor(amplitude * sin(frequency * step) + offset));
 
-    return make_shared<PrintIntLoad>(result);
+    return make_shared<Load>(result, 3);
   }
 
  private:
   double amplitude;
   double frequency;
   double offset;
-  int lastStep;
 };
 
 
@@ -80,14 +79,25 @@ class SinusLoadPattern : public LoadPattern {
  */
 class TestTimeline : public Timeline {
  public:
-  explicit TestTimeline(shared_ptr<LoadPattern> pattern)
-    : pattern(pattern) {}
+  explicit TestTimeline(
+    shared_ptr<LoadPattern> pattern,
+    shared_ptr<Worker> worker)
+    : pattern(pattern), worker(worker) {}
 
   void start() {
+    // TODO(nnielsen): Make work generation asynchrous.
     const int limit = 100;
     for (int step = 0; step < limit; step++) {
-      // TODO(nnielsen): Dispatch work to worker scheduler.
-      pattern->at(step)->perform();
+      workQueue.push(pattern->at(step));
+    }
+
+    // TODO(nnielsen): Make work execution asynchrous.
+    while (!workQueue.empty()) {
+      auto load = workQueue.front();
+
+      worker->work(load);
+
+      workQueue.pop();
     }
   }
 
@@ -96,11 +106,18 @@ class TestTimeline : public Timeline {
 
  private:
   shared_ptr<LoadPattern> pattern;
+  queue<shared_ptr<Load>> workQueue;
+
+  // TODO(nnielsen): Make this a list of workers.
+  shared_ptr<Worker> worker;
 };
 
 
 TEST(sinus_load, sample_test) {
-  TestTimeline timeline(make_shared<SinusLoadPattern>());
+  TestTimeline timeline(
+    make_shared<SinusLoadPattern>(),
+    make_shared<TestWorker>());
 
   timeline.start();
 }
+
